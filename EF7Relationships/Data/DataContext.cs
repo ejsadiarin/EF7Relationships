@@ -7,9 +7,10 @@ public class DataContext : DbContext
 {
     public DataContext(DbContextOptions<DataContext> options) : base(options)
     {
-        
+        // by exposing this constructor, we can provide these options at the moment we register the DbContext on the pipeline.
     }
     
     public DbSet<Character> Characters { get; set; }
     public DbSet<Backpack> Backpacks { get; set; }
+    public DbSet<Weapon> Weapons { get; set; }
 }
