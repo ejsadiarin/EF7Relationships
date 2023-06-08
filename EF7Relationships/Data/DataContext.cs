@@ -13,4 +13,6 @@ public class DataContext : DbContext
     public DbSet<Character> Characters { get; set; }
     public DbSet<Backpack> Backpacks { get; set; }
     public DbSet<Weapon> Weapons { get; set; }
+    // to create many-to-many relationships, a JUNCTION table is created (see CharacterFaction db)
+    public DbSet<Faction> Factions { get; set; }
 }
