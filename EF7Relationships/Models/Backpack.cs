@@ -6,6 +6,8 @@ public class Backpack
 {
    public int Id { get; set; }
    public string Description { get; set; }
+   
+   [JsonIgnore]
    public int CharacterId { get; set; }
    
    [JsonIgnore]

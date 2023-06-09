@@ -23,6 +23,23 @@ public class EF7RelationshipsController : ControllerBase
         _context = context;
     }
 
+    [HttpGet("{id}")]
+    public async Task<ActionResult<List<Character>>> GetCharacterById(int id)
+    {
+        var character = await _context.Characters
+            .Include(c => c.Backpack)
+            .Include(c => c.Weapons)
+            .Include(c => c.Factions)
+            .FirstOrDefaultAsync(c => c.Id == id);
+        
+        if (character is null)
+        {
+            return null;
+        }
+
+        return Ok(character);
+    }
+
     [HttpPost]
     public async Task<ActionResult<List<Character>>> CreateCharacter(CharacterCreateDto request)
     {
