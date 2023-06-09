@@ -8,6 +8,7 @@ using EF7Relationships.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace EF7Relationships.Controllers;
 
@@ -31,11 +32,19 @@ public class EF7RelationshipsController : ControllerBase
         };
 
         var backpack = new Backpack { Description = request.Backpack.Description, Character = newCharacter };
+        var weapons = request.Weapons.Select(weapon => new Weapon { Name = weapon.Name, Character = newCharacter }).ToList();
+        var factions = request.Factions.Select(faction => new Faction { Name = faction.Name, Characters = new List<Character> { newCharacter }}).ToList();
 
         newCharacter.Backpack = backpack;
+        newCharacter.Weapons = weapons;
+        newCharacter.Factions = factions;
+
         _context.Characters.Add(newCharacter);
         await _context.SaveChangesAsync();
 
-        return Ok(await _context.Characters.Include(c => c.Backpack).ToListAsync());
+        return Ok(await _context.Characters
+            .Include(c => c.Backpack)
+            .Include(c => c.Weapons)
+            .ToListAsync());
     }
 }
